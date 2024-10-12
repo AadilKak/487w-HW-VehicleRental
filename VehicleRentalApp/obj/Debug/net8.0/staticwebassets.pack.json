@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\aadil\\source\\repos\\VehicleRentalApp\\VehicleRentalApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VehicleRentalApp.bundle.scp.css",
+      "PackagePath": "staticwebassets\\VehicleRentalApp.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\aadil\\source\\repos\\VehicleRentalApp\\VehicleRentalApp\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\aadil\\source\\repos\\VehicleRentalApp\\VehicleRentalApp\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\aadil\\source\\repos\\VehicleRentalApp\\VehicleRentalApp\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\aadil\\source\\repos\\VehicleRentalApp\\VehicleRentalApp\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.VehicleRentalApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.VehicleRentalApp.props",
+      "PackagePath": "build\\VehicleRentalApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.VehicleRentalApp.props",
+      "PackagePath": "buildMultiTargeting\\VehicleRentalApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.VehicleRentalApp.props",
+      "PackagePath": "buildTransitive\\VehicleRentalApp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

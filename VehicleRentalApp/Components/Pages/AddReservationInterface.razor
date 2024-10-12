@@ -1,0 +1,143 @@
+﻿@page "/edit-reservation"
+@page "/edit-reservation/{Id:int}"
+@using VehicleRentalApp.Services
+@using VehicleRentalApp.Models
+@inject NavigationManager NavigationManager
+@inject IReservationService ReservationService
+
+@if (Id is null)
+{
+    <PageTitle>Add New Reservation</PageTitle>
+    <h3>Add New Reservation</h3>
+}
+else
+{
+    <PageTitle>Edit Reservation for "@CurrentReservation.drivername"</PageTitle>
+    <h3>Edit Reservation</h3>
+}
+
+<EditForm Model="CurrentReservation" OnValidSubmit="HandleSubmit" EditContext="editContext">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="container">
+        <h4>Reservation Details</h4>
+
+        <div class="row">
+            <div class="col">
+                <label for="drivername">Driver Name</label>
+                <InputText id="drivername" @bind-Value="CurrentReservation.drivername" class="form-control" />
+                <ValidationMessage For="@(() => CurrentReservation.drivername)" />
+            </div>
+            <div class="col">
+                <label for="vehiclemodel">Vehicle Model</label>
+                <InputText id="vehiclemodel" @bind-Value="CurrentReservation.vehiclemodel" class="form-control" />
+                <ValidationMessage For="@(() => CurrentReservation.vehiclemodel)" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="vehicletype">Vehicle Type</label>
+                <InputText id="vehicletype" @bind-Value="CurrentReservation.vehicletype" class="form-control" />
+                <ValidationMessage For="@(() => CurrentReservation.vehicletype)" />
+            </div>
+            <div class="col">
+                <label for="reservationdate">Reservation Date</label>
+                <InputDate id="reservationdate" @bind-Value="CurrentReservation.reservationdate" class="form-control" />
+                <ValidationMessage For="@(() => CurrentReservation.reservationdate)" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="checkoutdate">Checkout Date</label>
+                <InputDate id="checkoutdate" @bind-Value="CurrentReservation.checkoutdate" class="form-control" />
+                <ValidationMessage For="@(() => CurrentReservation.checkoutdate)" />
+            </div>
+            <div class="col">
+                <label for="returndate">Return Date</label>
+                <InputDate id="returndate" @bind-Value="CurrentReservation.returndate" class="form-control" />
+                <ValidationMessage For="@(() => CurrentReservation.returndate)" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="totalcost">Total Cost</label>
+                <InputNumber id="totalcost" @bind-Value="CurrentReservation.totalcost" class="form-control" />
+                <ValidationMessage For="@(() => CurrentReservation.totalcost)" />
+            </div>
+            <div class="col">
+                <label for="status">Status</label>
+                <InputText id="status" @bind-Value="CurrentReservation.status" class="form-control" />
+                <ValidationMessage For="@(() => CurrentReservation.status)" />
+            </div>
+        </div>
+
+        <div>
+            <br />
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+        </div>
+    </div>
+</EditForm>
+
+@if (valid)
+{
+    <div class="alert alert-success mt-3">You submitted a valid form</div>
+}
+
+@code {
+    EditContext editContext;
+    ValidationMessageStore validationMessages;
+    bool valid;
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    public Reservation CurrentReservation { get; set; } = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id is not null)
+        {
+            var reservation = await ReservationService.GetReservationByIdAsync((int)Id);
+            if (reservation is not null)
+                CurrentReservation = reservation;
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        editContext = new(CurrentReservation);
+        validationMessages = new(editContext);
+        valid = editContext.Validate();
+
+        try
+        {
+            if (valid)
+            {
+                if (Id is not null)
+                {
+                    // Update existing reservation
+                    await ReservationService.UpdateReservationAsync(CurrentReservation, (int)Id);
+                }
+                else // Add new reservation
+                {
+                    await ReservationService.AddReservationAsync(CurrentReservation);
+                }
+                NavigationManager.NavigateTo("/reservations");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exception (e.g., log error)
+            throw ex;
+        }
+    }
+
+    void CancelEdit()
+    {
+        NavigationManager.NavigateTo("/reservations");
+    }
+}

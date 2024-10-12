@@ -1,0 +1,100 @@
+﻿@page "/"
+@using VehicleRentalApp.Services
+@using VehicleRentalApp.Models
+@inject NavigationManager NavigationManager
+@inject IReservationService ReservationsService
+
+<PageTitle>Reservations</PageTitle>
+<h3>Vehicle Reservations</h3>
+<button class="btn btn-primary" @onclick="AddReservation">Add New Reservation</button>
+
+@if (reservations.Count == 0)
+{
+    <p><em>Loading Reservations...</em></p>
+}
+else
+{
+    <div class="form-group">
+        <br />
+        <input class="form-control" type="text" placeholder="Filter..."
+               @bind="Filter"
+               @bind:event="oninput">
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Reservation ID</th>
+                <th>Driver Name</th>
+                <th>Vehicle Model</th>
+                <th>Vehicle Type</th>
+                <th>Reservation Date</th>
+                <th>Checkout Date</th>
+                <th>Return Date</th>
+                <th>Total Cost</th>
+                <th>Status</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reservation in reservations)
+            {
+                if (!IsVisible(reservation))
+                    continue;
+                <tr>
+                    <td>@reservation.reservationid</td>
+                    <td>@reservation.drivername</td>
+                    <td>@reservation.vehiclemodel</td>
+                    <td>@reservation.vehicletype</td>
+                    <td>@reservation.reservationdate.ToShortDateString()</td>
+                    <td>@reservation.checkoutdate.ToShortDateString()</td>
+                    <td>@reservation.returndate.ToShortDateString()</td>
+                    <td>@reservation.totalcost.ToString("C")</td>  <!-- Format as currency -->
+                    <td>@reservation.status</td>
+                    <td><button class="btn btn-primary" @onclick="@(() => EditReservation(reservation.reservationid))">Edit</button></td>
+                    <td><button class="btn btn-danger" @onclick="@(() => DeleteReservation(reservation.reservationid))">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Reservation> reservations = new List<Reservation>();
+    public string Filter { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        reservations = await ReservationService.GetAllReservationsAsync();
+    }
+
+    void EditReservation(int id)
+    {
+        NavigationManager.NavigateTo($"/edit-reservation/{id}");
+    }
+
+    async Task DeleteReservation(int id)
+    {
+        await ReservationsService.DeleteReservationAsync(id);
+        reservations = await ReservationService.GetAllReservationsAsync();
+    }
+
+    void AddReservation()
+    {
+        NavigationManager.NavigateTo("/edit-reservation");
+    }
+
+    public bool IsVisible(Reservation reservation)
+    {
+        if (string.IsNullOrEmpty(Filter))
+            return true;
+
+        if (reservation.drivername.ToLower().StartsWith(Filter.ToLower()) ||
+            reservation.vehiclemodel.ToLower().StartsWith(Filter.ToLower()) ||
+            reservation.vehicletype.ToLower().StartsWith(Filter.ToLower()) ||
+            reservation.status.ToLower().StartsWith(Filter.ToLower()))
+            return true;
+
+        return false;
+    }
+}
