@@ -1,3 +1,6 @@
+@import '_content/Microsoft.Fast.Components.FluentUI/Microsoft.Fast.Components.FluentUI.bundle.scp.css';
+@import '_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.3eliywa438.bundle.scp.css';
+
 /* _content/VehicleRentalApp/Components/Layout/MainLayout.razor.rz.scp.css */
 .page[b-r6wvfx82yf] {
     position: relative;

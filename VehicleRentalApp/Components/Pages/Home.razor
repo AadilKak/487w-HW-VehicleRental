@@ -1,8 +1,7 @@
 ﻿@page "/"
-@using VehicleRentalApp.Services
-@using VehicleRentalApp.Models
+@rendermode InteractiveServer
 @inject NavigationManager NavigationManager
-@inject IReservationService ReservationsService
+@inject IReservationService ReservationService
 
 <PageTitle>Reservations</PageTitle>
 <h3>Vehicle Reservations</h3>
@@ -75,13 +74,13 @@ else
 
     async Task DeleteReservation(int id)
     {
-        await ReservationsService.DeleteReservationAsync(id);
+        await ReservationService.DeleteReservationAsync(id);
         reservations = await ReservationService.GetAllReservationsAsync();
     }
 
-    void AddReservation()
+    private void AddReservation()
     {
-        NavigationManager.NavigateTo("/edit-reservation");
+        NavigationManager.NavigateTo($"/edit-reservation");
     }
 
     public bool IsVisible(Reservation reservation)

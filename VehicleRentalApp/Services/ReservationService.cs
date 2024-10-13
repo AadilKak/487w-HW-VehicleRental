@@ -14,14 +14,14 @@ namespace VehicleRentalApp.Services
             _context = context;
         }
 
+        public async Task<List<Reservation>> GetAllReservationsAsync()
+        {
+            var result =  _context.reservationsTable.ToList();
+            return result;
+        }
         public async Task<Reservation> GetReservationByIdAsync(int id)
         {
             return await _context.reservationsTable.FindAsync(id);
-        }
-
-        public async Task<List<Reservation>> GetAllReservationsAsync()
-        {
-            return await _context.reservationsTable.ToListAsync();
         }
 
         public async Task AddReservationAsync(Reservation reservation)
